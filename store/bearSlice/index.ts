@@ -14,15 +14,16 @@ type Actions = {
 
 export interface IBearSlice { 
   bears: number
-  addBear: (qty: number) => void
+  addBear: () => void
+  eatFish: () => void
 }
 
 
 export const createBearSlice:StoreSlice<IBearSlice> = (set, get) => ({
-  bears: 0,
+  bears: 1,
   addBear: () => set((state) => produce(state, (draft) => { 
     // draft.bears = draft.bears + 1;
     draft.bears = get().bears + 1
   })),
-  // eatFish: () => set((state) => ({ fishes: state.fishes - 1 })),
+  eatFish: () => set((state) => ({ fishes: state.fishes - state.bears })),
 })

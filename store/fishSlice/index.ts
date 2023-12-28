@@ -8,6 +8,6 @@ export interface IFishSlice  {
 
 
 export const createFishSlice:StoreSlice<IFishSlice> = (set,get) => ({
-  fishes: 0,
+  fishes: 20,
   addFish: () => set((state) => ({ fishes: state.fishes + 1 })),
 })
