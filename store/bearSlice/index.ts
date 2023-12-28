@@ -7,7 +7,6 @@ export interface IBearSlice {
   eatFish: () => void
 }
 
-
 export const createBearSlice: StoreSlice<IBearSlice> = (set, get, store) => ({
   bears: 1,
   addBear: () => set((state) => produce(state, (draft) => {

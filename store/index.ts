@@ -2,10 +2,7 @@ import { StateCreator, StoreMutatorIdentifier, create } from 'zustand'
 import { IBearSlice, createBearSlice } from './bearSlice'
 import { IFishSlice, createFishSlice } from './fishSlice'
 
-
-
-export type IBoundStore = IBearSlice & IFishSlice
-
+type IBoundStore = IBearSlice & IFishSlice
 
 export type StoreSlice<T, Mis extends [StoreMutatorIdentifier, unknown][] = [], Mos extends [StoreMutatorIdentifier, unknown][] = []> = StateCreator<IBoundStore, Mis, Mos, T>
 
