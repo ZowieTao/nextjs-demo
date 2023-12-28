@@ -4,7 +4,7 @@ import { IFishSlice, createFishSlice } from './fishSlice'
 
 type IBoundStore = IBearSlice & IFishSlice
 
-export type StoreSlice<T, Mis extends [StoreMutatorIdentifier, unknown][] = [], Mos extends [StoreMutatorIdentifier, unknown][] = []> = StateCreator<IBoundStore, Mis, Mos, T>
+export type BoundStoreSlice<T, Mis extends [StoreMutatorIdentifier, unknown][] = [], Mos extends [StoreMutatorIdentifier, unknown][] = []> = StateCreator<IBoundStore, Mis, Mos, T>
 
 
 export const useBoundStore = create<IBoundStore>((set, get, store) => ({

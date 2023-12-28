@@ -2,11 +2,15 @@
 import Link from 'next/link'
 
 export default function ScopeCounterPage() {
-  const { count, inc } = useStore()
+  const computeDoubleCount = (num: number) => 2 * num
 
-  const { fishes, bears } = useBoundStore((state) => {
-    return { fishes: state.fishes, bears: state.bears }
-  })
+  const { computedCount, inc } = useScopeCounterStore(useShallow((state) => {
+    const computedCount = computeDoubleCount(state.count)
+
+    return { computedCount, inc: state.inc }
+  }))
+
+  const { bears, fishes } = useBoundStore()
 
   return (
     <>
@@ -22,7 +26,7 @@ export default function ScopeCounterPage() {
           </span>
         </h2>
         <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-          plus page counter state, let&apos;s check out: {count}
+          plus page counter state, let&apos;s check out: {computedCount}
         </p>
       </a>
 
@@ -48,14 +52,24 @@ export default function ScopeCounterPage() {
 
 import { useBoundStore } from '@/store'
 import { create } from 'zustand'
+import { useShallow } from 'zustand/react/shallow'
+import { produce } from 'immer'
 
 type Store = {
   count: number
   inc: () => void
+  vanishBear: () => void
 }
 
-const useStore = create<Store>()((set) => ({
+const useScopeCounterStore = create<Store>()((set) => ({
   count: 1,
   inc: () => set((state) => ({ count: state.count + 1 })),
+  vanishBear: () => {
+    useBoundStore.setState((state) => {
+      return produce(state, (draft) => {
+        draft.bears = 0
+      })
+    })
+  }
 }))
 

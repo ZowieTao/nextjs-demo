@@ -1,5 +1,5 @@
 import { produce } from "immer"
-import { StoreSlice } from ".."
+import { BoundStoreSlice } from ".."
 
 export interface IBearSlice {
   bears: number
@@ -7,7 +7,7 @@ export interface IBearSlice {
   eatFish: () => void
 }
 
-export const createBearSlice: StoreSlice<IBearSlice> = (set, get, store) => ({
+export const createBearSlice: BoundStoreSlice<IBearSlice> = (set, get, store) => ({
   bears: 1,
   addBear: () => set((state) => produce(state, (draft) => {
     // draft.bears = draft.bears + 1;
