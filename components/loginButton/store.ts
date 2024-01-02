@@ -1,6 +1,6 @@
 import { create } from 'zustand'
+import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
-import { devtools } from 'zustand/middleware'
 
 type LoginState = {
   isLoggedIn: boolean
@@ -37,34 +37,59 @@ const initialState: LoginState = {
   profile: undefined
 }
 
-export const useLoginStore = create<LoginState & LoginActions>()(immer(devtools((set, get) => ({
-  isLoggedIn: false,
-  loggingIn: false,
-  profile: undefined,
+export const useLoginStore = create<LoginState & LoginActions>()(immer(
+  devtools(
+    persist(
+      (set, get) => ({
+        isLoggedIn: false,
+        loggingIn: false,
+        profile: undefined,
 
-  login: async () => {
-    if (!get().loggingIn) {
-      set(state => {
-        state.loggingIn = true
-      })
-      try {
-        const { profile } = await loginFn()
+        login: async () => {
+          if (!get().loggingIn) {
+            set(state => {
+              state.loggingIn = true
+            })
+            try {
+              const { profile } = await loginFn()
 
-        set(state => {
-          state.isLoggedIn = true
-          state.profile = profile
-        })
-      } catch (error) {
-        // toast({id: '', message: error})
-        console.error(error)
-      } finally {
-        set(state => {
-          state.loggingIn = false
-        })
-      }
+              set(state => {
+                state.isLoggedIn = true
+                state.profile = profile
+              })
+            } catch (error) {
+              // toast({id: '', message: error})
+              console.error(error)
+            } finally {
+              set(state => {
+                state.loggingIn = false
+              })
+            }
+          }
+        },
+        logout: () => {
+          set(initialState)
+        }
+      }), {
+      name: 'myLoginStore',
+      partialize: (state) => {
+        return Object.fromEntries(
+          Object.entries(state).filter(([key, val]) => {
+            return !['loggingIn'].includes(key)
+          })
+        )
+      },
+      // partialize: (state) => { 
+      //   return {
+      //     isLoggedIn: state.isLoggedIn,
+      //     profile: state.profile
+      //   }
+        // }
+
+        // storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage), 
     }
-  },
-  logout: () => {
-    set(initialState)
-  }
-}), { enabled: process.env.NODE_ENV !== 'production', name: 'LoginStore' })))
+    ),
+    { enabled: process.env.NODE_ENV !== 'production', name: 'LoginStore' }
+  )
+))
