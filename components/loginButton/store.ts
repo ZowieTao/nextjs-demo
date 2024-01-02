@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { devtools } from 'zustand/middleware'
 
 type LoginState = {
   isLoggedIn: boolean
@@ -36,7 +37,7 @@ const initialState: LoginState = {
   profile: undefined
 }
 
-export const useLoginStore = create<LoginState & LoginActions>()(immer((set, get) => ({
+export const useLoginStore = create<LoginState & LoginActions>()(immer(devtools((set, get) => ({
   isLoggedIn: false,
   loggingIn: false,
   profile: undefined,
@@ -66,4 +67,4 @@ export const useLoginStore = create<LoginState & LoginActions>()(immer((set, get
   logout: () => {
     set(initialState)
   }
-})))
+}), { enabled: process.env.NODE_ENV !== 'production', name: 'LoginStore' })))
