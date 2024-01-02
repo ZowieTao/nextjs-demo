@@ -46,6 +46,8 @@ export default function ScopeCounterPage() {
           Fish: {fishes} | Bear: {bears}
         </p>
       </Link>
+
+      <LoginButton />
     </>
   )
 }
@@ -54,6 +56,7 @@ import { useBoundStore } from '@/store'
 import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
 import { produce } from 'immer'
+import LoginButton from '@/components/loginButton'
 
 type Store = {
   count: number
