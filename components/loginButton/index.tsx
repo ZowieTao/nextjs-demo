@@ -1,8 +1,9 @@
 import { useLoginStore } from "./store"
+import { useShallow } from "zustand/react/shallow"
 
 export default function LoginButton() {
   const
-    { btnContent, isLoggedIn, loggingIn, login, logout } = useLoginStore((state) => {
+    { btnContent, isLoggedIn, loggingIn, login, logout } = useLoginStore(useShallow((state) => {
       const profile = state.profile
       const btnContent = state.isLoggedIn ? `hi, ${profile?.name}, click to logout` : 'LogIn'
 
@@ -14,7 +15,7 @@ export default function LoginButton() {
         login: state.login,
         logout: state.logout
       }
-    })
+    }))
 
   return (
     <p

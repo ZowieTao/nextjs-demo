@@ -41,34 +41,32 @@ export const useLoginStore = create<LoginState & LoginActions>()(immer(
   devtools(
     persist(
       (set, get) => ({
-        isLoggedIn: false,
-        loggingIn: false,
-        profile: undefined,
+        ...initialState,
 
         login: async () => {
           if (!get().loggingIn) {
             set(state => {
               state.loggingIn = true
-            })
+            }, false, 'login start')
             try {
               const { profile } = await loginFn()
 
               set(state => {
                 state.isLoggedIn = true
                 state.profile = profile
-              })
+              }, false, 'login success')
             } catch (error) {
               // toast({id: '', message: error})
               console.error(error)
             } finally {
               set(state => {
                 state.loggingIn = false
-              })
+              }, false, 'login finish')
             }
           }
         },
         logout: () => {
-          set(initialState)
+          set(initialState, false, 'logout')
         }
       }), {
       name: 'myLoginStore',
@@ -84,10 +82,10 @@ export const useLoginStore = create<LoginState & LoginActions>()(immer(
       //     isLoggedIn: state.isLoggedIn,
       //     profile: state.profile
       //   }
-        // }
+      // }
 
-        // storage: createJSONStorage(() => sessionStorage),
-      storage: createJSONStorage(() => localStorage), 
+      // storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     }
     ),
     { enabled: process.env.NODE_ENV !== 'production', name: 'LoginStore' }
