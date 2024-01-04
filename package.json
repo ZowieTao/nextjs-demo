@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@byted/lightcharts": "^2.3.0",
+    "@byted/react-lightcharts": "^0.5.0",
     "clsx": "^2.0.0",
     "immer": "^10.0.3",
     "next": "14.0.4",
