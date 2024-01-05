@@ -5,6 +5,7 @@ import { BarDemo } from "./components/BarDemo"
 import { DotMapDemo } from "./components/DotMapDemo"
 import { PieDemo } from "./components/PieDemo"
 import { ScatterDemo } from "./components/ScatterDemo"
+import { VideoDataDemo } from "./components/VideoDataDemo"
 
 
 export default function LightchartsDemo() {
@@ -16,6 +17,7 @@ export default function LightchartsDemo() {
       <PieDemo />
       <ScatterDemo />
       <DotMapDemo />
+      <VideoDataDemo />
     </>
   )
 }

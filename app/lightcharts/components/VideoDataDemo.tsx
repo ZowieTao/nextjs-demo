@@ -1,27 +1,133 @@
 import { ChartOption } from "@byted/lightcharts";
 import * as lightcharts from '@byted/lightcharts'
 import ReactLightcharts from '@byted/react-lightcharts'
+import { useState } from "react";
 
 export const VideoDataDemo = () => {
+  const data = [
+    {
+      timestamp: '0',
+      video_ratio: 100,
+      click_ratio: 0,
+      conversion_ratio: 0
+    },
+    {
+      timestamp: '1000',
+      video_ratio: 56.7,
+      click_ratio: 9,
+      conversion_ratio: 7
+    },
+    {
+      timestamp: '2000',
+      video_ratio: 46.1,
+      click_ratio: 4.9,
+      conversion_ratio: 4.3
+    },
+    {
+      timestamp: '3000',
+      video_ratio: 39.9,
+      click_ratio: 4.4,
+      conversion_ratio: 3.7
+    },
+    {
+      timestamp: '4000',
+      video_ratio: 36.5,
+      click_ratio: 3.7,
+      conversion_ratio: 7.9
+    },
+    {
+      timestamp: '5000',
+      video_ratio: 34.7,
+      click_ratio: 4.1,
+      conversion_ratio: 4.6
+    },
+    {
+      timestamp: '6000',
+      video_ratio: 33.2,
+      click_ratio: 5,
+      conversion_ratio: 4.5
+    },
+    {
+      timestamp: '7000',
+      video_ratio: 32,
+      click_ratio: 6.7,
+      conversion_ratio: 4.2
+    },
+    {
+      timestamp: '8000',
+      video_ratio: 31.5,
+      click_ratio: 3,
+      conversion_ratio: 3
+    },
+    {
+      timestamp: '9000',
+      video_ratio: 31,
+      click_ratio: 2,
+      conversion_ratio: 5
+    },
+    {
+      timestamp: '10000',
+      video_ratio: 30.5,
+      click_ratio: 4.5,
+      conversion_ratio: 8
+    },
+    {
+      timestamp: '11000',
+      video_ratio: 30,
+      click_ratio: 8,
+      conversion_ratio: 10
+    }
+  ]
+  const [focusRowInfo, setFocusRowInfo] = useState(data[0])
 
   const option: ChartOption = {
-    data: [{ "date": "2020-12-01", "business_01": 489, "business_02": 260, "business_03": 260, "business_04": 260, "business_05": 260 }, { "date": "2020-12-08", "business_01": 520, "business_02": 260, "business_03": 260, "business_04": 260, "business_05": 260 }, { "date": "2020-12-15", "business_01": 460, "business_02": 260, "business_03": 260, "business_04": 260, "business_05": 260 }, { "date": "2020-12-22", "business_01": 489, "business_02": 260, "business_03": 260, "business_04": 260, "business_05": 260 }, { "date": "2020-12-30", "business_01": 540, "business_02": 260, "business_03": 260, "business_04": 260, "business_05": 260 }],
-    padding: [0, 40, 24, 80],
+    data,
+    padding: [0, 80],
     legend: { show: false },
     tooltip: {
-      sort: (a, b) => {
-        return a.value - b.value
-      },
+      show: true,
+      allowEnter: true,
+      triggerOn: 'click',
+      showContent: false,
+      trigger: 'axis',
+      alwaysShow: true,
+      position: (params) => {
+        const { points } = params
+        setFocusRowInfo(points[0].data)
+
+        return { x: params.mouse.x, y: params.mouse.y }
+      }
     },
-    colors: ["#7875f6", "#7baaf6", "#86f0f1", "#f7ca70", "#f08c89"],
+    colors: ["#7875f6", "#7baaf6", "#f7ca70"],
     xAxis: {
       type: "category",
       padding: false,
     },
-    yAxis: {
-      type: "value",
-      show: false,
-    },
+    yAxis: [
+      {
+        type: "value",
+        title: {
+          show: false,
+        },
+        show: true,
+        gridLine: {
+          show: true,
+          stroke: "#282828",
+          lineDash: [2],
+        },
+        axisLabel: {
+          show: false
+        }
+      },
+      {
+        type: "value",
+        show: false
+      },
+      {
+        type: "value",
+        show: false
+      },
+    ],
     series: [],
     events: {
       onAfterrender: ({ chart }) => {
@@ -58,29 +164,29 @@ export const VideoDataDemo = () => {
     },
   };
 
-  const nameList = ["业务01部", "业务02部", "业务03部", "电商平台", "大众消费"];
+  const nameList = ["Video ratio", "Click ratio", "Conversion ratio"];
 
   [
-    "business_01",
-    "business_02",
-    "business_03",
-    "business_04",
-    "business_05",
+    "video_ratio",
+    "click_ratio",
+    "conversion_ratio",
   ].forEach((field, index) => {
-    option.series.push({
-      type: "area",
+    option.series && option.series.push({
+      type: "line",
       name: nameList[index],
+      smooth: true,
+      yAxis: index,
       encode: {
-        x: "date",
+        x: "timestamp",
         y: field,
       },
-      stack: "business",
     });
   });
 
 
   return (
     <div>
+      <div className="text-sm font-normal my-2"> {`Video Ratio:${focusRowInfo.video_ratio}%  Click Ratio:${focusRowInfo.click_ratio}%  Conversion Ratio:${focusRowInfo.conversion_ratio}%`}</div>
       <ReactLightcharts option={option} />
     </div>
   )
