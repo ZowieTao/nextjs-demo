@@ -1167,7 +1167,11 @@ export const DotMapDemo = () => {
     },
 
     colorLegend: {
-      show: true
+      show: true,
+      position: "left",
+      align: 'end',
+      orient: 'vertical',
+      handleIcon: 'triangle'
     },
     series: [
       {
@@ -1179,7 +1183,7 @@ export const DotMapDemo = () => {
           lng: "longtitude",
           lat: "latitude",
           size: ['count', [0, 10]],
-          color: ['count', '#33f-#fff'],
+          color: ['count', '#fff-#33f'],
         },
         shapeStyle: {
           fillOpacity: 1,
