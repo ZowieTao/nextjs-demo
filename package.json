@@ -12,6 +12,7 @@
     "@next/bundle-analyzer": "^14.1.0",
     "@visactor/vchart": "^1.8.9",
     "clsx": "^2.0.0",
+    "echarts": "^5.4.3",
     "immer": "^10.0.3",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
