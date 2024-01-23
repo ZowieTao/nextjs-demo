@@ -1,6 +1,27 @@
+'use client'
 import Link from "next/link";
 
+import * as lightchart from '@byted/lightcharts'
+
+import { useEffect } from "react";
+
+
 export default function Home() {
+  useEffect(() => {
+    const xx = document.querySelector('div')
+    if (xx) {
+      const chart = new lightchart.Chart(xx)
+      const option = {
+        series: [
+          {
+            type: 'line'
+          }
+        ]
+      }
+      chart.setOption(option)
+    }
+  }, [])
+
   return (
     <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
       <a

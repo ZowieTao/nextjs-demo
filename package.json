@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@byted/lightcharts": "^2.3.0",
     "@next/bundle-analyzer": "^14.1.0",
     "@visactor/vchart": "^1.8.9",
     "clsx": "^2.0.0",
