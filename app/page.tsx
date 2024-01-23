@@ -1,6 +1,62 @@
+'use client'
 import Link from "next/link";
 
+
+// 引入 VChart 核心模块
+import { VChart } from "@visactor/vchart/esm/core";
+// 引入柱状图
+import { registerBarChart, registerAreaChart, registerLineChart, registerScatterChart, registerPieChart, registerMapChart } from "@visactor/vchart/esm/chart";
+// 引入坐标轴、Tooltip、CrossHair 组件
+import {
+  registerCartesianLinearAxis,
+  registerCartesianBandAxis,
+  registerTooltip,
+  registerCartesianCrossHair, registerTitle
+} from "@visactor/vchart/esm/component";
+// 引入浏览器环境
+import { registerBrowserEnv } from "@visactor/vchart/esm/env";
+import { IBarChartSpec } from "@visactor/vchart";
+import { useEffect } from "react";
+
+
+
 export default function Home() {
+  // 注册
+  VChart.useRegisters([
+    registerBarChart, registerAreaChart, registerLineChart, registerScatterChart, registerPieChart, registerMapChart,
+    registerCartesianLinearAxis,
+    registerCartesianBandAxis,
+    registerTooltip,
+    registerCartesianCrossHair,
+    registerBrowserEnv, registerTitle
+  ]);
+  useEffect(() => {
+    const spec: IBarChartSpec = {
+      type: "bar",
+      data: [
+        {
+          id: "barData",
+          values: [
+            { month: "Monday", sales: 22 },
+            { month: "Tuesday", sales: 13 },
+            { month: "Wednesday", sales: 25 },
+            { month: "Thursday", sales: 29 },
+            { month: "Friday", sales: 38 }
+          ]
+        }
+      ],
+      xField: "month",
+      yField: "sales",
+      crosshair: {
+        xField: { visible: true }
+      }
+    };
+
+    const vchart = new VChart(spec, { dom: "container" });
+    vchart.renderAsync();
+  }, [])
+
+
   return (
     <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
       <a
